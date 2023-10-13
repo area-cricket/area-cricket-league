@@ -91,7 +91,7 @@ export default function Registration() {
     // url: "http://18.234.178.235:7000/cricket/register",
 
     axios
-      .post("http://localhost:7000/cricket/register", formData, {
+      .post("http://18.234.178.235:7000/cricket/register", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
