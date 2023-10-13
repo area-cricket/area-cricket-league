@@ -1,0 +1,153 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.bg {
+  background-image: url("./assets/form-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  min-height: 1185px;
+  position: relative;
+}
+.bgCard {
+  background-image: url("./assets/card.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  width: 423px;
+  height: 500px;
+  position: relative;
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logosWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 4px 10px;
+}
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+}
+.inputsWrapper {
+  width: 280px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.inputBoxes {
+  background: white;
+  border: 1px solid #01012f;
+  border-radius: 3px;
+  padding: 7px;
+  margin: 4px;
+  color: black;
+  cursor: pointer;
+}
+input:focus {
+  border: none;
+  outline: none;
+}
+select:focus {
+  border: none;
+  outline: none;
+}
+.fontStyle {
+  font-family: "Montserrat", sans-serif;
+}
+.imageStyle {
+  width: 100px;
+  height: 100px;
+  margin: 5px 10px;
+}
+h3,
+h4 {
+  margin: 5px auto;
+  color: black;
+}
+.sponsorsWrapper {
+  position: absolute;
+  bottom: 10px;
+  display: flex;
+  height: 50px;
+  justify-content: center;
+  width: 100%;
+}
+.sponsorImg {
+  height: 50px;
+}
+.cardWrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.logosWrapperCard {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 10px;
+  width: 100%;
+}
+.cardDetails {
+  background: #ffffff59;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-top: 20px;
+}
+h2 {
+  color: #2e0808;
+  margin: 5px 0;
+}
+.uploadedImg {
+  width: 120px;
+  height: 121px;
+  border-radius: 5px;
+  position: absolute;
+  top: 163px;
+  right: 52px;
+  border-radius: 70px;
+}
+.name {
+  position: absolute;
+  top: 101px;
+  left: 90px;
+  font-size: 18px;
+}
+.number {
+  position: absolute;
+  top: 144px;
+  left: 105px;
+  font-size: 16px;
+}
+.role {
+  position: absolute;
+  top: 248px;
+  left: 42px;
+  font-size: 16px;
+}
+.batStyle {
+  position: absolute;
+  top: 316px;
+  left: 42px;
+  font-size: 16px;
+}
+.bowlStyle {
+  position: absolute;
+  top: 382px;
+  left: 42px;
+  font-size: 16px;
+}
+.id {
+  position: absolute;
+  top: 4px;
+  right: 24px;
+  color: white;
+  width: 61px;
+  justify-content: center;
+  display: flex;
+}
