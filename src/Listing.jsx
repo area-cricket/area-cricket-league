@@ -171,7 +171,7 @@ export default function ListPlayers() {
       <div
         className={styles.bgCard}
         ref={componentRef}
-        style={{ display: "" }}
+        style={{ display: "none" }}
       >
         <div className={styles.cardWrapper}>
           {selectedImage && (
