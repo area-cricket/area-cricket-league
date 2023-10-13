@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import personImage from "./assets/logo.png";
 import tournamentLogoJPG from "./assets/tournament-logo.jpg";
 import allSponsors from "./assets/sponsors/all.jpg";
+import titleSponsor from "./assets/sponsors/titleSponsor.jpeg";
 import noImg from "./assets/noImg.png";
 import payment from "./assets/payment.jpeg";
 
@@ -12,6 +13,7 @@ export default function Registration() {
   const componentRef = useRef();
 
   const [name, setName] = useState("");
+  const [team, setTeam] = useState("");
   const [position, setPosition] = useState("");
   const [role, setRole] = useState("");
   const [batStyle, setBatStyle] = useState("");
@@ -20,10 +22,12 @@ export default function Registration() {
   const [jerseySize, setJerseySize] = useState("");
   const [pantSize, setPantSize] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [paymentImage, setPaymentImage] = useState(null);
 
   const handleName = (event) => {
     setName(event.target.value);
+  };
+  const handleTeam = (event) => {
+    setTeam(event.target.value);
   };
   const handlePosition = (event) => {
     setPosition(event.target.value);
@@ -61,24 +65,11 @@ export default function Registration() {
       reader.readAsDataURL(file);
     }
   };
-  const handlePaymentScreenshot = (event) => {
-    const file = event.target.files[0];
-
-    if (file) {
-      // Convert the image to Base64
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const imageData = e.target.result;
-        setPaymentImage(imageData);
-      };
-
-      reader.readAsDataURL(file);
-    }
-  };
 
   const registerPlayer = () => {
     let formData = new FormData();
     formData.append("name", name);
+    formData.append("team", team);
     formData.append("phone", number);
     formData.append("role", role);
     formData.append("position", position);
@@ -91,7 +82,7 @@ export default function Registration() {
     // url: "http://18.234.178.235:7000/cricket/register",
 
     axios
-      .post("http://18.234.178.235:7000/cricket/register", formData, {
+      .post("http://localhost:7000/cricket/register", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -121,6 +112,7 @@ export default function Registration() {
                 className={styles.imageStyle}
               />
             </div>
+            {console.log("selectedImage", selectedImage)}
             <div className={styles.inputsWrapper}>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 {selectedImage ? (
@@ -144,6 +136,14 @@ export default function Registration() {
                 className={styles.inputBoxes}
                 value={name}
                 onChange={handleName}
+              />
+              <input
+                type="text"
+                required
+                placeholder="Team"
+                className={styles.inputBoxes}
+                value={team}
+                onChange={handleTeam}
               />
               <input
                 type="text"
@@ -206,22 +206,23 @@ export default function Registration() {
                 onChange={handleNumber}
               />
               <label for="fileInput" class="custom-file-upload">
-                <span>Photo (Max: 3MB - 500*500)</span>
+                <span>Photo (Max: 1MB - 500*500)</span>
                 <input
                   type="file"
                   id="fileInput"
-                  name="image"
                   onChange={handleImageUpload}
                 />
               </label>
-              <img src={payment} alt="payment" style={{ margin: "10px 0" }} />
-              <label for="fileInput" class="custom-file-upload">
+              <img
+                src={payment}
+                alt="payment"
+                style={{ margin: "10px 0", padding: "5px 20px" }}
+              />
+              <label for="payment Input" class="custom-file-upload">
                 <span>Upload payment screenshot</span>
                 <input
                   type="file"
-                  id="fileInput"
-                  name="image"
-                  onChange={handlePaymentScreenshot}
+                  id="payment Input"
                 />
               </label>
               <div
@@ -257,6 +258,13 @@ export default function Registration() {
               </div>
             </div>
           </div>
+        </div>
+        <div className={styles.titleSponsorsWrapper}>
+          <img
+            src={titleSponsor}
+            alt="Uploaded"
+            className={styles.titleSponsor}
+          />
         </div>
 
         <div className={styles.sponsorsWrapper}>

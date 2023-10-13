@@ -10,6 +10,7 @@ export default function ListPlayers() {
   const downloadButtonRef = useRef();
 
   const [data, setData] = useState([]);
+  const [team, setTeam] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [batStyle, setBatStyle] = useState("");
@@ -23,6 +24,11 @@ export default function ListPlayers() {
       title: "Name",
       dataIndex: "name",
       key: "name",
+    },
+    {
+      title: "Team",
+      dataIndex: "team",
+      key: "team",
     },
     {
       title: "Role",
@@ -89,6 +95,7 @@ export default function ListPlayers() {
 
   const setCardData = (item) => {
     setName(item.name);
+    setTeam(item.team);
     setRole(item.role);
     setBatStyle(item.batting);
     setBowlStyle(item.bowling);
@@ -164,7 +171,7 @@ export default function ListPlayers() {
       <div
         className={styles.bgCard}
         ref={componentRef}
-        style={{ display: "none" }}
+        style={{ display: "" }}
       >
         <div className={styles.cardWrapper}>
           {selectedImage && (
@@ -178,6 +185,7 @@ export default function ListPlayers() {
             <h1 style={{ fontSize: "25px" }}>{playerId}</h1>
           </div>
           <h2 className={styles.name}>{name}</h2>
+          <h2 className={styles.team}>{team}</h2>
           <h3 className={styles.number}>{number}</h3>
           <h3 className={styles.role}>{role}</h3>
           <h3 className={styles.batStyle}>{batStyle}</h3>
