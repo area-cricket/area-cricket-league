@@ -60,18 +60,19 @@ export default function ListPlayers() {
       key: "phone",
     },
     {
-      title: "",
+      title: "Photo",
       dataIndex: "image",
       render: (text, key) => (
         <img
           src={text}
           alt="player"
-          style={{ width: "150px", height: "150px" }}
+          style={{ width: "50px", height: "50px" }}
         />
       ),
+      key: "image",
     },
     {
-      title: "Download",
+      title: "Player Card",
       render: (text, key) => (
         <button
           onClick={() => {
@@ -81,6 +82,8 @@ export default function ListPlayers() {
           Download
         </button>
       ),
+      key: "download",
+      dataIndex: "download",
     },
   ];
 
@@ -105,7 +108,7 @@ export default function ListPlayers() {
 
     axios(config)
       .then((res) => {
-        setData(res.data.orders);
+        setData(res.data.players);
       })
       .catch((err) => {});
   };
@@ -130,6 +133,8 @@ export default function ListPlayers() {
       downloadButtonRef.current.click();
     }
   };
+
+  console.log("data", data);
 
   return (
     <main className={styles.main}>
