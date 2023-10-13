@@ -88,9 +88,8 @@ export default function Registration() {
         },
       })
       .then((res) => {
-        if (res.data.success) {
+
           alert("Registration Successful");
-        }
       })
       .catch((err) => {});
   };
