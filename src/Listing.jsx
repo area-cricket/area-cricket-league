@@ -113,6 +113,9 @@ export default function ListPlayers() {
     let config = {
       method: "get",
       url: `${baseUrl}cricket/players`,
+      headers: {
+        "Content-Type": "application/json",
+      },
     };
 
     axios(config)
