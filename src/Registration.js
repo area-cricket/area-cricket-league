@@ -8,6 +8,7 @@ import allSponsors from "./assets/sponsors/all.jpg";
 import titleSponsor from "./assets/sponsors/titleSponsor.jpeg";
 import noImg from "./assets/noImg.png";
 import payment from "./assets/payment.jpeg";
+import { baseUrl } from "./constants/constants";
 
 export default function Registration() {
   const componentRef = useRef();
@@ -22,6 +23,7 @@ export default function Registration() {
   const [jerseySize, setJerseySize] = useState("");
   const [pantSize, setPantSize] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imageToUpload, setImageToUpload] = useState(null);
 
   const handleName = (event) => {
     setName(event.target.value);
@@ -53,6 +55,8 @@ export default function Registration() {
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
 
+    setImageToUpload(file);
+
     if (file) {
       // Convert the image to Base64
       const reader = new FileReader();
@@ -72,24 +76,23 @@ export default function Registration() {
     formData.append("team", team);
     formData.append("phone", number);
     formData.append("role", role);
-    formData.append("position", position);
+    formData.append("jerseyNumber", position);
     formData.append("batting", batStyle);
     formData.append("bowling", bowlStyle);
     formData.append("jersey", jerseySize);
     formData.append("tracks", pantSize);
-    formData.append("image", selectedImage);
-    // formData.append("payment", paymentImage);
-    // url: "http://18.234.178.235:7000/cricket/register",
+    formData.append("image", imageToUpload);
 
     axios
-      .post("http://18.234.178.235:7000/cricket/register", formData, {
+      .post(`${baseUrl}cricket/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
-
+        if (res.data.success) {
           alert("Registration Successful");
+        }
       })
       .catch((err) => {});
   };
@@ -111,7 +114,6 @@ export default function Registration() {
                 className={styles.imageStyle}
               />
             </div>
-            {console.log("selectedImage", selectedImage)}
             <div className={styles.inputsWrapper}>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 {selectedImage ? (
@@ -128,6 +130,7 @@ export default function Registration() {
                   />
                 )}
               </div>
+
               <input
                 type="text"
                 required
@@ -147,7 +150,7 @@ export default function Registration() {
               <input
                 type="text"
                 required
-                placeholder="Position"
+                placeholder="Jersey Number"
                 className={styles.inputBoxes}
                 value={position}
                 onChange={handlePosition}
@@ -204,25 +207,19 @@ export default function Registration() {
                 value={number}
                 onChange={handleNumber}
               />
-              <label for="fileInput" class="custom-file-upload">
+              <label for="image" class="custom-file-upload">
                 <span>Photo (Max: 1MB - 500*500)</span>
                 <input
                   type="file"
-                  id="fileInput"
+                  id="image"
+                  name="sampleFile"
                   onChange={handleImageUpload}
                 />
               </label>
-              <img
-                src={payment}
-                alt="payment"
-                style={{ margin: "10px 0", padding: "5px 20px" }}
-              />
+              <img src={payment} alt="payment" className={styles.qrCode} />
               <label for="payment Input" class="custom-file-upload">
                 <span>Upload payment screenshot</span>
-                <input
-                  type="file"
-                  id="payment Input"
-                />
+                <input type="file" id="payment Input" />
               </label>
               <div
                 style={{
