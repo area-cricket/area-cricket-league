@@ -4,6 +4,7 @@ import ReactToPrint from "react-to-print";
 import axios from "axios";
 
 import styles from "./page.module.css";
+import { baseUrl } from "./constants/constants";
 
 export default function ListPlayers() {
   const componentRef = useRef();
@@ -36,9 +37,9 @@ export default function ListPlayers() {
       key: "role",
     },
     {
-      title: "Position",
-      dataIndex: "position",
-      key: "position",
+      title: "Jersey Number",
+      dataIndex: "jerseyNumber",
+      key: "jerseyNumber",
     },
     {
       title: "Batting Style",
@@ -70,7 +71,7 @@ export default function ListPlayers() {
       dataIndex: "image",
       render: (text, key) => (
         <img
-          src={text}
+          src={`${baseUrl}..${text}`}
           alt="player"
           style={{ width: "50px", height: "50px" }}
         />
@@ -84,6 +85,7 @@ export default function ListPlayers() {
           onClick={() => {
             setCardData(key);
           }}
+          className={styles.downloadBtn}
         >
           Download
         </button>
@@ -101,7 +103,7 @@ export default function ListPlayers() {
     setBowlStyle(item.bowling);
     setNumber(item.phone);
     setPlayerId(item.id);
-    setSelectedImage(item.image);
+    setSelectedImage(`${baseUrl}..${item.image}`);
     setTimeout(() => {
       triggerDownloadButtonClick();
     }, 1500);
@@ -110,7 +112,7 @@ export default function ListPlayers() {
   const getPlayers = () => {
     let config = {
       method: "get",
-      url: "http://18.234.178.235:7000/cricket/players",
+      url: `${baseUrl}cricket/players`,
     };
 
     axios(config)

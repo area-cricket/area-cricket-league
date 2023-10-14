@@ -8,7 +8,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
-  min-height: 1160px;
+  min-height: 1165px;
   position: relative;
 }
 .bgCard {
@@ -167,4 +167,17 @@ h2 {
   width: 61px;
   justify-content: center;
   display: flex;
+}
+.downloadBtn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.qrCode {
+  margin: 0px;
+  padding: 5px;
+  border-radius: 20px;
+  height: 260px;
 }
