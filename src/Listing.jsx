@@ -2,13 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import { Table } from "antd";
 import ReactToPrint from "react-to-print";
 import axios from "axios";
+import { collection, getDocs } from "firebase/firestore";
 
 import styles from "./page.module.css";
 import { baseUrl } from "./constants/constants";
+import { db } from "./firebaseConfig";
 
 export default function ListPlayers() {
   const componentRef = useRef();
   const downloadButtonRef = useRef();
+  const users = collection(db, "users");
 
   const [data, setData] = useState([]);
   const [team, setTeam] = useState("");
@@ -17,8 +20,8 @@ export default function ListPlayers() {
   const [batStyle, setBatStyle] = useState("");
   const [bowlStyle, setBowlStyle] = useState("");
   const [number, setNumber] = useState("");
-  const [playerId, setPlayerId] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [user, setUser] = useState([]);
 
   const columns = [
     {
@@ -43,13 +46,13 @@ export default function ListPlayers() {
     },
     {
       title: "Batting Style",
-      dataIndex: "batting",
-      key: "batting",
+      dataIndex: "batStyle",
+      key: "batStyle",
     },
     {
       title: "Bowling Style",
-      dataIndex: "bowling",
-      key: "bowling",
+      dataIndex: "bowlStyle",
+      key: "bowlStyle",
     },
     {
       title: "Jersey",
@@ -63,15 +66,15 @@ export default function ListPlayers() {
     },
     {
       title: "Phone No",
-      dataIndex: "phone",
-      key: "phone",
+      dataIndex: "number",
+      key: "number",
     },
     {
       title: "Photo",
       dataIndex: "image",
       render: (text, key) => (
         <img
-          src={`${baseUrl}..${text}`}
+          src={text}
           alt="player"
           style={{ width: "50px", height: "50px" }}
         />
@@ -96,14 +99,14 @@ export default function ListPlayers() {
   ];
 
   const setCardData = (item) => {
+    console.log("itemitemitem", item);
     setName(item.name);
     setTeam(item.team);
     setRole(item.role);
-    setBatStyle(item.batting);
-    setBowlStyle(item.bowling);
-    setNumber(item.phone);
-    setPlayerId(item.id);
-    setSelectedImage(`${baseUrl}..${item.image}`);
+    setBatStyle(item.batStyle);
+    setBowlStyle(item.bowlStyle);
+    setNumber(item.number);
+    setSelectedImage(item.image);
     setTimeout(() => {
       triggerDownloadButtonClick();
     }, 1500);
@@ -125,8 +128,14 @@ export default function ListPlayers() {
       .catch((err) => {});
   };
 
+  const getFirebaseData = async () => {
+    const data = await getDocs(users);
+    setUser(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+
   useEffect(() => {
     getPlayers();
+    getFirebaseData();
   }, []);
 
   // printing
@@ -146,12 +155,10 @@ export default function ListPlayers() {
     }
   };
 
-  console.log("data", data);
-
   return (
     <main className={styles.main}>
       <h1 style={{ color: "#a26f00" }}>Registered Players List</h1>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={user} />
       <h5>
         Created with ❤️ by{" "}
         <a
@@ -186,9 +193,9 @@ export default function ListPlayers() {
               className={styles.uploadedImg}
             />
           )}
-          <div className={styles.id}>
+          {/* <div className={styles.id}>
             <h1 style={{ fontSize: "25px" }}>{playerId}</h1>
-          </div>
+          </div> */}
           <h2 className={styles.name}>{name}</h2>
           <h2 className={styles.team}>{team}</h2>
           <h3 className={styles.number}>{number}</h3>

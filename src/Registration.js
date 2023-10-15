@@ -9,9 +9,12 @@ import titleSponsor from "./assets/sponsors/titleSponsor.jpeg";
 import noImg from "./assets/noImg.png";
 import payment from "./assets/payment.jpeg";
 import { baseUrl } from "./constants/constants";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "./firebaseConfig";
 
 export default function Registration() {
   const componentRef = useRef();
+  const usersCollection = collection(db, "users");
 
   const [name, setName] = useState("");
   const [team, setTeam] = useState("");
@@ -95,6 +98,29 @@ export default function Registration() {
         }
       })
       .catch((err) => {});
+  };
+
+  const firebaseRegister = async () => {
+    let newDocData = {
+      name: name,
+      team: team,
+      number: number,
+      role: role,
+      jerseyNumber: position,
+      batStyle: batStyle,
+      bowlStyle: bowlStyle,
+      jersey: jerseySize,
+      tracks: pantSize,
+      image: selectedImage,
+    };
+
+    addDoc(usersCollection, newDocData).then((docRef) => {
+      if (docRef.id) {
+        alert("Registration Successful");
+      } else {
+        alert("Couldn't Register");
+      }
+    });
   };
 
   return (
@@ -229,6 +255,7 @@ export default function Registration() {
                   width: "98%",
                 }}
               >
+                {/* <button onClick={() => firebaseRegister()}>Reg fire</button> */}
                 <button
                   style={{
                     border: "none",
@@ -247,7 +274,7 @@ export default function Registration() {
                     number.length === 0 ||
                     selectedImage === null
                   }
-                  onClick={() => registerPlayer()}
+                  onClick={() => firebaseRegister()}
                 >
                   Register
                 </button>
