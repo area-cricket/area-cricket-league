@@ -12,7 +12,7 @@
   position: relative;
 }
 .bgCard {
-  background-image: url("./assets/card.jpg");
+  background-image: url("./assets/card-new.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
@@ -114,7 +114,7 @@ h2 {
   color: #2e0808;
   margin: 5px 0;
 }
-.uploadedImg {
+/* .uploadedImg {
   width: 120px;
   height: 121px;
   border-radius: 5px;
@@ -167,6 +167,83 @@ h2 {
   width: 61px;
   justify-content: center;
   display: flex;
+}
+.downloadBtn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.qrCode {
+  margin: 0px;
+  padding: 5px;
+  border-radius: 20px;
+  height: 260px;
+} */
+.uploadedImg {
+  width: 151px;
+  height: 152px;
+  border-radius: 5px;
+  position: absolute;
+  top: 138px;
+  left: 36px;
+  border-radius: 70px;
+}
+.name {
+  position: absolute;
+  top: 325px;
+  left: 30px;
+  font-size: 18px;
+  width: 160px;
+  justify-content: center;
+  display: flex;
+}
+.team {
+  position: absolute;
+  top: 375px;
+  left: 30px;
+  font-size: 18px;
+  width: 160px;
+  justify-content: center;
+  display: flex;
+}
+.number {
+  position: absolute;
+  top: 400px;
+  left: 60px;
+  font-size: 16px;
+  width: 100px;
+  justify-content: center;
+  display: flex;
+}
+.role {
+  position: absolute;
+  top: 284px;
+  right: 141px;
+  font-size: 16px;
+}
+.batStyle {
+  position: absolute;
+  top: 352px;
+  right: 141px;
+  font-size: 16px;
+}
+.bowlStyle {
+  position: absolute;
+  top: 424px;
+  right: 141px;
+  font-size: 16px;
+}
+.id {
+  position: absolute;
+  top: 150px;
+  left: 8px;
+  color: white;
+  width: 54px;
+  justify-content: center;
+  display: flex;
+  font-size: 20px;
 }
 .downloadBtn {
   padding: 5px 10px;
