@@ -27,6 +27,7 @@ export default function Registration() {
   const [pantSize, setPantSize] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageToUpload, setImageToUpload] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleName = (event) => {
     setName(event.target.value);
@@ -74,6 +75,7 @@ export default function Registration() {
   };
 
   const registerPlayer = () => {
+    setIsLoading(true);
     let formData = new FormData();
     formData.append("name", name);
     formData.append("team", team);
@@ -94,13 +96,18 @@ export default function Registration() {
       })
       .then((res) => {
         if (res.data.success) {
+          setIsLoading(false);
           alert("Registration Successful");
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        setIsLoading(false);
+        alert("Couldn't complete registration");
+      });
   };
 
   const firebaseRegister = async () => {
+    setIsLoading(true);
     let newDocData = {
       name: name,
       team: team,
@@ -117,8 +124,10 @@ export default function Registration() {
     addDoc(usersCollection, newDocData).then((docRef) => {
       if (docRef.id) {
         alert("Registration Successful");
+        setIsLoading(false);
       } else {
         alert("Couldn't Register");
+        setIsLoading(false);
       }
     });
   };
@@ -274,7 +283,11 @@ export default function Registration() {
                     number.length === 0 ||
                     selectedImage === null
                   }
-                  onClick={() => firebaseRegister()}
+                  onClick={() => {
+                    if (!isLoading) {
+                      firebaseRegister();
+                    }
+                  }}
                 >
                   Register
                 </button>
