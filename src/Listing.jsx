@@ -1,19 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Table } from "antd";
 import ReactToPrint from "react-to-print";
-import axios from "axios";
-import { collection, getDocs } from "firebase/firestore";
 
 import styles from "./page.module.css";
-import { baseUrl } from "./constants/constants";
-import { db } from "./firebaseConfig";
+import { StateContext } from "./contexts/Context";
 
 export default function ListPlayers() {
   const componentRef = useRef();
   const downloadButtonRef = useRef();
-  const users = collection(db, "users");
+  const { getFirebaseData, user } = useContext(StateContext);
 
-  const [data, setData] = useState([]);
   const [team, setTeam] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
@@ -21,7 +17,7 @@ export default function ListPlayers() {
   const [bowlStyle, setBowlStyle] = useState("");
   const [number, setNumber] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [user, setUser] = useState([]);
+  const [playerId, setPlayerId] = useState(0);
 
   const columns = [
     {
@@ -99,7 +95,6 @@ export default function ListPlayers() {
   ];
 
   const setCardData = (item) => {
-    console.log("itemitemitem", item);
     setName(item.name);
     setTeam(item.team);
     setRole(item.role);
@@ -107,34 +102,29 @@ export default function ListPlayers() {
     setBowlStyle(item.bowlStyle);
     setNumber(item.number);
     setSelectedImage(item.image);
+    setPlayerId(item.id || 0);
     setTimeout(() => {
       triggerDownloadButtonClick();
     }, 1500);
   };
 
-  const getPlayers = () => {
-    let config = {
-      method: "get",
-      url: `${baseUrl}cricket/players`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+  // const getPlayers = () => {
+  //   let config = {
+  //     method: "get",
+  //     url: `${baseUrl}cricket/players`,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   };
 
-    axios(config)
-      .then((res) => {
-        setData(res.data.players);
-      })
-      .catch((err) => {});
-  };
-
-  const getFirebaseData = async () => {
-    const data = await getDocs(users);
-    setUser(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  };
+  //   axios(config)
+  //     .then((res) => {
+  //       setData(res.data.players);
+  //     })
+  //     .catch((err) => {});
+  // };
 
   useEffect(() => {
-    getPlayers();
     getFirebaseData();
   }, []);
 
@@ -158,6 +148,7 @@ export default function ListPlayers() {
   return (
     <main className={styles.main}>
       <h1 style={{ color: "#a26f00" }}>Registered Players List</h1>
+      <h5> Total Registrations : {user?.length}</h5>
       <Table columns={columns} dataSource={user} />
       <h5>
         Created with ❤️ by{" "}
@@ -202,6 +193,7 @@ export default function ListPlayers() {
           <h3 className={styles.role}>{role}</h3>
           <h3 className={styles.batStyle}>{batStyle}</h3>
           <h3 className={styles.bowlStyle}>{bowlStyle}</h3>
+          // <h3 className={styles.id}>{playerId}</h3>
         </div>
       </div>
     </main>

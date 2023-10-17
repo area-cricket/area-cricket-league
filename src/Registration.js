@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 import styles from "./page.module.css";
@@ -8,11 +8,13 @@ import allSponsors from "./assets/sponsors/all.jpg";
 import titleSponsor from "./assets/sponsors/titleSponsor.jpeg";
 import noImg from "./assets/noImg.png";
 import payment from "./assets/payment.jpeg";
-import { baseUrl } from "./constants/constants";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "./firebaseConfig";
+import { StateContext } from "./contexts/Context";
 
 export default function Registration() {
+  const { user, getFirebaseData } = useContext(StateContext);
+
   const componentRef = useRef();
   const usersCollection = collection(db, "users");
 
@@ -28,6 +30,7 @@ export default function Registration() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageToUpload, setImageToUpload] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [nextId, setNextId] = useState(user?.id);
 
   const handleName = (event) => {
     setName(event.target.value);
@@ -74,37 +77,44 @@ export default function Registration() {
     }
   };
 
-  const registerPlayer = () => {
-    setIsLoading(true);
-    let formData = new FormData();
-    formData.append("name", name);
-    formData.append("team", team);
-    formData.append("phone", number);
-    formData.append("role", role);
-    formData.append("jerseyNumber", position);
-    formData.append("batting", batStyle);
-    formData.append("bowling", bowlStyle);
-    formData.append("jersey", jerseySize);
-    formData.append("tracks", pantSize);
-    formData.append("image", imageToUpload);
+  // const registerPlayer = () => {
+  //   setIsLoading(true);
+  //   let formData = new FormData();
+  //   formData.append("name", name);
+  //   formData.append("team", team);
+  //   formData.append("phone", number);
+  //   formData.append("role", role);
+  //   formData.append("jerseyNumber", position);
+  //   formData.append("batting", batStyle);
+  //   formData.append("bowling", bowlStyle);
+  //   formData.append("jersey", jerseySize);
+  //   formData.append("tracks", pantSize);
+  //   formData.append("image", imageToUpload);
+  //   formData.append()
 
-    axios
-      .post(`${baseUrl}cricket/register`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        if (res.data.success) {
-          setIsLoading(false);
-          alert("Registration Successful");
-        }
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        alert("Couldn't complete registration");
-      });
-  };
+  //   axios
+  //     .post(`${baseUrl}cricket/register`, formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       if (res.data.success) {
+  //         setIsLoading(false);
+  //         alert("Registration Successful");
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setIsLoading(false);
+  //       alert("Couldn't complete registration");
+  //     });
+  // };
+
+  useEffect(() => {
+    getFirebaseData().then((res) => {
+      setNextId(user.length + 1);
+    });
+  }, []);
 
   const firebaseRegister = async () => {
     setIsLoading(true);
@@ -119,6 +129,7 @@ export default function Registration() {
       jersey: jerseySize,
       tracks: pantSize,
       image: selectedImage,
+      id: nextId || 0,
     };
 
     addDoc(usersCollection, newDocData).then((docRef) => {
@@ -131,7 +142,7 @@ export default function Registration() {
       }
     });
   };
-
+  
   return (
     <main className={styles.main}>
       <div className={styles.bg} ref={componentRef}>

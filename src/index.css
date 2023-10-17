@@ -15,6 +15,10 @@ button {
   font-family: "Montserrat", sans-serif;
 }
 
+select {
+  min-height: 32px;
+}
+
 .custom-file-upload {
   display: inline-block;
   padding: 7px;
