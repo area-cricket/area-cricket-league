@@ -174,7 +174,7 @@ export default function ListPlayers() {
       <div
         className={styles.bgCard}
         ref={componentRef}
-        style={{ display: "none" }}
+        style={{ display: "" }}
       >
         <div className={styles.cardWrapper}>
           {selectedImage && (
@@ -193,7 +193,7 @@ export default function ListPlayers() {
           <h3 className={styles.role}>{role}</h3>
           <h3 className={styles.batStyle}>{batStyle}</h3>
           <h3 className={styles.bowlStyle}>{bowlStyle}</h3>
-          // <h3 className={styles.id}>{playerId}</h3>
+          {/* <h3 className={styles.id}>{playerId}</h3> */}
         </div>
       </div>
     </main>
