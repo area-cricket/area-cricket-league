@@ -201,7 +201,7 @@ h2 {
 }
 .team {
   position: absolute;
-  top: 375px;
+  top: 370px;
   left: 30px;
   font-size: 18px;
   width: 160px;
@@ -220,19 +220,19 @@ h2 {
 .role {
   position: absolute;
   top: 284px;
-  right: 141px;
+  left: 238px;
   font-size: 16px;
 }
 .batStyle {
   position: absolute;
   top: 352px;
-  right: 141px;
+  left: 238px;
   font-size: 16px;
 }
 .bowlStyle {
   position: absolute;
   top: 424px;
-  right: 141px;
+  left: 238px;
   font-size: 16px;
 }
 .id {
