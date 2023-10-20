@@ -20,7 +20,7 @@ function Spinner() {
         background: "#ffffff63",
         width: "100vw",
         height: "100%",
-        minHeight: "1166px",
+        minHeight: "1165px",
       }}
     >
       <Spin
