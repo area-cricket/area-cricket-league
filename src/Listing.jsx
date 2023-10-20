@@ -149,7 +149,12 @@ export default function ListPlayers() {
     <main className={styles.main}>
       <h1 style={{ color: "#a26f00" }}>Registered Players List</h1>
       <h5> Total Registrations : {user?.length}</h5>
-      <Table columns={columns} dataSource={user} />
+      <Table
+        columns={columns}
+        dataSource={user}
+        scroll={{ xs: 500 }}
+        style={{ overflowY: "scroll" }}
+      />
       <h5>
         Created with ❤️ by{" "}
         <a

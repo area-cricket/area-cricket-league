@@ -11,6 +11,7 @@ import payment from "./assets/payment.jpeg";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 import { StateContext } from "./contexts/Context";
+import Spinner from "./components/Spinner";
 
 export default function Registration() {
   const { user, getFirebaseData } = useContext(StateContext);
@@ -110,11 +111,11 @@ export default function Registration() {
   //     });
   // };
 
-  useEffect(() => {
-    getFirebaseData().then((res) => {
-      setNextId(user.length + 1);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getFirebaseData().then((res) => {
+  //     setNextId(user.length + 1);
+  //   });
+  // }, []);
 
   const firebaseRegister = async () => {
     setIsLoading(true);
@@ -142,9 +143,10 @@ export default function Registration() {
       }
     });
   };
-  
+
   return (
     <main className={styles.main}>
+      {isLoading && <Spinner />}
       <div className={styles.bg} ref={componentRef}>
         <div className={styles.wrapper}>
           <div className={styles.inputContainer}>
@@ -292,7 +294,8 @@ export default function Registration() {
                     batStyle.length === 0 ||
                     bowlStyle.length === 0 ||
                     number.length === 0 ||
-                    selectedImage === null
+                    selectedImage === null ||
+                    isLoading
                   }
                   onClick={() => {
                     if (!isLoading) {
