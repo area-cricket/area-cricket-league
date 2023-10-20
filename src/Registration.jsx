@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import axios from "axios";
+import React, { useContext, useRef, useState } from "react";
 
 import styles from "./page.module.css";
 import personImage from "./assets/logo.png";
@@ -14,7 +13,7 @@ import { StateContext } from "./contexts/Context";
 import Spinner from "./components/Spinner";
 
 export default function Registration() {
-  const { user, getFirebaseData } = useContext(StateContext);
+  const { user } = useContext(StateContext);
 
   const componentRef = useRef();
   const usersCollection = collection(db, "users");
@@ -130,18 +129,24 @@ export default function Registration() {
       jersey: jerseySize,
       tracks: pantSize,
       image: selectedImage,
-      id: nextId || 0,
+      createdAt: new Date(),
     };
 
-    addDoc(usersCollection, newDocData).then((docRef) => {
-      if (docRef.id) {
-        alert("Registration Successful");
+    addDoc(usersCollection, newDocData)
+      .then((docRef) => {
+        if (docRef.id) {
+          alert("Registration Successful");
+          setIsLoading(false);
+          window.location.reload();
+        } else {
+          alert("Couldn't Register");
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        alert(err);
         setIsLoading(false);
-      } else {
-        alert("Couldn't Register");
-        setIsLoading(false);
-      }
-    });
+      });
   };
 
   return (

@@ -4,12 +4,17 @@ import ReactToPrint from "react-to-print";
 
 import styles from "./page.module.css";
 import { StateContext } from "./contexts/Context";
+import { db } from "./firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
 
 export default function ListPlayers() {
+  const users = collection(db, "users");
+
   const componentRef = useRef();
   const downloadButtonRef = useRef();
-  const { getFirebaseData, user } = useContext(StateContext);
+  // const { user } = useContext(StateContext);
 
+  const [user, setUser] = useState([]);
   const [team, setTeam] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
@@ -17,7 +22,6 @@ export default function ListPlayers() {
   const [bowlStyle, setBowlStyle] = useState("");
   const [number, setNumber] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [playerId, setPlayerId] = useState(0);
 
   const columns = [
     {
@@ -102,27 +106,37 @@ export default function ListPlayers() {
     setBowlStyle(item.bowlStyle);
     setNumber(item.number);
     setSelectedImage(item.image);
-    setPlayerId(item.id || 0);
     setTimeout(() => {
       triggerDownloadButtonClick();
     }, 1500);
   };
 
-  // const getPlayers = () => {
-  //   let config = {
-  //     method: "get",
-  //     url: `${baseUrl}cricket/players`,
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   };
+  const getFirebaseData = async () => {
+    const data = await getDocs(users);
+    console.log("data from firebase", data);
 
-  //   axios(config)
-  //     .then((res) => {
-  //       setData(res.data.players);
-  //     })
-  //     .catch((err) => {});
-  // };
+    let dataToState = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    setUser(sortDataByCreatedAtDesc(dataToState));
+  };
+
+  // Function to sort data by 'createdAt' in descending order
+  function sortDataByCreatedAtDesc(data) {
+    return data.sort((a, b) => {
+      if (a.createdAt && b.createdAt) {
+        return b.createdAt - a.createdAt;
+      } else if (a.createdAt) {
+        return -1; // 'a' has 'createdAt', so it comes before 'b' (which doesn't have 'createdAt')
+      } else if (b.createdAt) {
+        return 1; // 'b' has 'createdAt', so it comes before 'a' (which doesn't have 'createdAt')
+      } else {
+        return 0; // Both 'a' and 'b' don't have 'createdAt', keep their order unchanged
+      }
+    });
+  }
 
   useEffect(() => {
     getFirebaseData();
@@ -149,6 +163,7 @@ export default function ListPlayers() {
     <main className={styles.main}>
       <h1 style={{ color: "#a26f00" }}>Registered Players List</h1>
       <h5> Total Registrations : {user?.length}</h5>
+      {console.log("user", user)}
       <Table
         columns={columns}
         dataSource={user}
