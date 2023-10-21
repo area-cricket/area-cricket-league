@@ -120,6 +120,8 @@ export default function ListPlayers() {
       id: doc.id,
     }));
 
+    console.log("dataToState", dataToState)
+
     setUser(sortDataByCreatedAtDesc(dataToState));
   };
 
