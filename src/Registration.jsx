@@ -1,4 +1,7 @@
 import React, { useContext, useRef, useState } from "react";
+import { addDoc, collection } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db } from "./firebaseConfig";
 
 import styles from "./page.module.css";
 import personImage from "./assets/logo.png";
@@ -7,8 +10,6 @@ import allSponsors from "./assets/sponsors/all.jpg";
 import titleSponsor from "./assets/sponsors/titleSponsor.jpeg";
 import noImg from "./assets/noImg.png";
 import payment from "./assets/payment.jpeg";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "./firebaseConfig";
 import { StateContext } from "./contexts/Context";
 import Spinner from "./components/Spinner";
 
@@ -77,76 +78,88 @@ export default function Registration() {
     }
   };
 
-  // const registerPlayer = () => {
+  // const firebaseRegister = async () => {
   //   setIsLoading(true);
-  //   let formData = new FormData();
-  //   formData.append("name", name);
-  //   formData.append("team", team);
-  //   formData.append("phone", number);
-  //   formData.append("role", role);
-  //   formData.append("jerseyNumber", position);
-  //   formData.append("batting", batStyle);
-  //   formData.append("bowling", bowlStyle);
-  //   formData.append("jersey", jerseySize);
-  //   formData.append("tracks", pantSize);
-  //   formData.append("image", imageToUpload);
-  //   formData.append()
+  //   let newDocData = {
+  //     name: name,
+  //     team: team,
+  //     number: number,
+  //     role: role,
+  //     jerseyNumber: position,
+  //     batStyle: batStyle,
+  //     bowlStyle: bowlStyle,
+  //     jersey: jerseySize,
+  //     tracks: pantSize,
+  //     image: imageToUpload,
+  //     createdAt: new Date(),
+  //   };
 
-  //   axios
-  //     .post(`${baseUrl}cricket/register`, formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     })
-  //     .then((res) => {
-  //       if (res.data.success) {
-  //         setIsLoading(false);
+  //   addDoc(usersCollection, newDocData)
+  //     .then((docRef) => {
+  //       if (docRef.id) {
   //         alert("Registration Successful");
+  //         setIsLoading(false);
+  //         window.location.reload();
+  //       } else {
+  //         alert("Couldn't Register");
+  //         setIsLoading(false);
   //       }
   //     })
   //     .catch((err) => {
+  //       alert(err);
   //       setIsLoading(false);
-  //       alert("Couldn't complete registration");
   //     });
   // };
 
-  // useEffect(() => {
-  //   getFirebaseData().then((res) => {
-  //     setNextId(user.length + 1);
-  //   });
-  // }, []);
-
   const firebaseRegister = async () => {
     setIsLoading(true);
-    let newDocData = {
-      name: name,
-      team: team,
-      number: number,
-      role: role,
-      jerseyNumber: position,
-      batStyle: batStyle,
-      bowlStyle: bowlStyle,
-      jersey: jerseySize,
-      tracks: pantSize,
-      image: selectedImage,
-      createdAt: new Date(),
-    };
 
-    addDoc(usersCollection, newDocData)
-      .then((docRef) => {
-        if (docRef.id) {
-          alert("Registration Successful");
+    // Assuming 'imageToUpload' is a File object from an input element
+    const storage = getStorage();
+    const storageRef = ref(storage, `images/${imageToUpload.name}`);
+
+    try {
+      console.log("imageToUplaod", imageToUpload);
+      // Upload the image file to Firebase Storage
+      await uploadBytes(storageRef, imageToUpload);
+
+      // Get the download URL for the uploaded file
+      const imageUrl = await getDownloadURL(storageRef);
+
+      // Create a new document in Firestore with the image URL
+      let newDocData = {
+        name: name,
+        team: team,
+        number: number,
+        role: role,
+        jerseyNumber: position,
+        batStyle: batStyle,
+        bowlStyle: bowlStyle,
+        jersey: jerseySize,
+        tracks: pantSize,
+        image: imageUrl, // Use the download URL as the image field
+        createdAt: new Date(),
+      };
+
+      addDoc(usersCollection, newDocData)
+        .then((docRef) => {
+          if (docRef.id) {
+            alert("Registration Successful");
+            setIsLoading(false);
+            window.location.reload();
+          } else {
+            alert("Couldn't Register");
+            setIsLoading(false);
+          }
+        })
+        .catch((err) => {
+          alert(err);
           setIsLoading(false);
-          window.location.reload();
-        } else {
-          alert("Couldn't Register");
-          setIsLoading(false);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-        setIsLoading(false);
-      });
+        });
+    } catch (error) {
+      alert("Error uploading image: " + error.message);
+      setIsLoading(false);
+    }
   };
 
   return (
