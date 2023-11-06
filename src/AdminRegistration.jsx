@@ -13,7 +13,7 @@ import payment from "./assets/payment.jpeg";
 import { StateContext } from "./contexts/Context";
 import Spinner from "./components/Spinner";
 
-export default function Registration() {
+export default function RegistrationCopy() {
   const { user } = useContext(StateContext);
 
   const componentRef = useRef();
@@ -165,7 +165,7 @@ export default function Registration() {
   return (
     <main className={styles.main}>
       {isLoading && <Spinner />}
-      <div className={styles.bgCopy} ref={componentRef}>
+      <div className={styles.bg} ref={componentRef}>
         <div className={styles.wrapper}>
           <div className={styles.inputContainer}>
             <div className={styles.logosWrapper}>
@@ -180,10 +180,151 @@ export default function Registration() {
                 className={styles.imageStyle}
               />
             </div>
-            <h3 className={styles.customH3}>
-              Hey, the registrations is now closed ! Please contact the event
-              organisers more details
-            </h3>
+            <div className={styles.inputsWrapper}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                {selectedImage ? (
+                  <img
+                    src={selectedImage}
+                    alt="Uploaded"
+                    className={styles.imageStyle}
+                  />
+                ) : (
+                  <img
+                    src={noImg}
+                    alt="No item"
+                    className={styles.imageStyle}
+                  />
+                )}
+              </div>
+
+              <input
+                type="text"
+                required
+                placeholder="Name"
+                className={styles.inputBoxes}
+                value={name}
+                onChange={handleName}
+              />
+              <input
+                type="text"
+                required
+                placeholder="Team"
+                className={styles.inputBoxes}
+                value={team}
+                onChange={handleTeam}
+              />
+              <input
+                type="text"
+                required
+                placeholder="Jersey Number"
+                className={styles.inputBoxes}
+                value={position}
+                onChange={handlePosition}
+              />
+              <input
+                type="text"
+                required
+                placeholder="Role"
+                className={styles.inputBoxes}
+                value={role}
+                onChange={handleRole}
+              />
+              <select className={styles.inputBoxes} onChange={handleBatStyle}>
+                <option value="" disabled selected>
+                  Batting Style
+                </option>
+                <option>Right</option>
+                <option>Left</option>
+              </select>
+              <select className={styles.inputBoxes} onChange={handleBowlStyle}>
+                <option value="" disabled selected>
+                  Bowling Style
+                </option>
+                <option>Right</option>
+                <option>Left</option>
+              </select>
+              <select className={styles.inputBoxes} onChange={handleJerseySize}>
+                <option value="" disabled selected>
+                  Jersey Size
+                </option>
+                <option>36</option>
+                <option>38</option>
+                <option>40</option>
+                <option>42</option>
+                <option>44</option>
+                <option>46</option>
+              </select>
+              <select className={styles.inputBoxes} onChange={handlePantSize}>
+                <option value="" disabled selected>
+                  Track Pant Size
+                </option>
+                <option>26</option>
+                <option>28</option>
+                <option>30</option>
+                <option>32</option>
+                <option>34</option>
+                <option>36</option>
+              </select>
+              <input
+                type="text"
+                required
+                placeholder="Contact Number"
+                className={styles.inputBoxes}
+                value={number}
+                onChange={handleNumber}
+              />
+              <label for="image" class="custom-file-upload">
+                <span>Photo (Max: 1MB - 500*500)</span>
+                <input
+                  type="file"
+                  id="image"
+                  name="sampleFile"
+                  onChange={handleImageUpload}
+                />
+              </label>
+              <img src={payment} alt="payment" className={styles.qrCode} />
+              <label for="payment Input" class="custom-file-upload">
+                <span>Upload payment screenshot</span>
+                <input type="file" id="payment Input" />
+              </label>
+              <div
+                style={{
+                  margin: "10px auto",
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "98%",
+                }}
+              >
+                {/* <button onClick={() => firebaseRegister()}>Reg fire</button> */}
+                <button
+                  style={{
+                    border: "none",
+                    background: "#ffc400",
+                    borderRadius: "3px",
+                    padding: "8px 15px",
+                    fontWeight: "700",
+                    width: "100%",
+                  }}
+                  disabled={
+                    name.length === 0 ||
+                    position.length === 0 ||
+                    role.length === 0 ||
+                    batStyle.length === 0 ||
+                    bowlStyle.length === 0 ||
+                    number.length === 0 ||
+                    selectedImage === null ||
+                    isLoading
+                  }
+                  onClick={() => {
+                    if (!isLoading) {
+                      firebaseRegister();
+                    }
+                  }}
+                >
+                  Register
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <div className={styles.titleSponsorsWrapper}>
